@@ -126,3 +126,78 @@ ros2 run my_xarm6_app pick_place_vision.py
 
 You should see the robot that run a pick and place with the position given by the 3D camera
 
+
+## ⚙️ Integration with LLM - Ollama
+
+- We are going totackle this integration in 2 step
+
+- Step 1: User prompt, Ollama reply by parsing a JSON file on the command to pass to the controller.
+We will create a RO2 node that traslate JSON data in command to send to MoveIt
+
+- Step 2: reasoning loop orchestrated from a node ROS2 using LLM as tool
+
+
+## Step 1:
+
+- install ollama:
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+- check:
+```bash
+ollama --version
+```
+- Get the model
+```bash
+ollama pull llama3
+```
+python3 -m venv venv
+source venv/bin/activate
+pip install requests
+
+- Test Ollama:
+
+cd ~/my_xarm6_app 
+python -m my_xarm6_app.llm.test_ollama
+
+# Architecture Step 1
+Terminal (ros2 topic pub)
+        │
+        ▼
+/llm_command (String)
+        │
+        ▼
+[llm_command_node] → call Ollama → generate PoseStamped → pub /target_pose
+        │
+        ▼
+[move_to_position_from_llm] → call IK → FollowJointTrajectory
+        │
+        ▼
+robot in Gazebo moves
+
+- test
+- Terminal 1:
+```bash
+ros2 launch my_xarm6 spawn_xarm6_gripper_moveit_world.launch.py
+```
+
+- Terminal 2:
+```bash
+ros2 run my_xarm6_app move_to_position_llm
+```
+
+- Terminal 3:
+```bash
+cd ~/my_xarm6_app
+source venv/bin/activate
+ros2 launch my_xarm6_app llm_command_node
+```
+
+- Terminal 4:
+```bash
+ros2 topic pub /llm_command std_msgs/String "{data: 'move the TCP to x 0.3 y 0.5 z 0.3 keeping current orientation'}"
+```
+
+
+

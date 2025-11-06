@@ -10,7 +10,7 @@ setup(
     name=package_name,
     version='0.0.0',
     #packages=find_packages(exclude=['test']),
-    packages=[package_name, f'{package_name}.motion', f'{package_name}.vision'],
+    packages=[package_name, f'{package_name}.motion', f'{package_name}.vision', f'{package_name}.llm'],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
@@ -36,7 +36,10 @@ setup(
             'color_detection = my_xarm6_app.vision.color_detection:main',
             'object_position = my_xarm6_app.vision.object_position:main',
             'object_position_server = my_xarm6_app.vision.object_position_server:main',
-            'pick_place_vision = my_xarm6_app.motion.pick_place_vision:main'
+            'pick_place_vision = my_xarm6_app.motion.pick_place_vision:main',
+            'llm_command_node = my_xarm6_app.llm.llm_command_node:main',
+            'move_to_position_llm = my_xarm6_app.motion.move_to_position_llm:main'
+
         ],
     },
 )
