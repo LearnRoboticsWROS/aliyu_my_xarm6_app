@@ -16,6 +16,7 @@ setup(
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name, 'srv'), glob('srv/*.srv')),
+        ('share/' + package_name + '/launch', glob('launch/*.launch.py')),
     ],
     install_requires=['setuptools', 'opencv-python', 'numpy', 'scipy', 'open3d', 'pyyaml', 'transforms3d', 'rosidl_default_generators', 'rosidl_default_runtime'],
     zip_safe=True,
@@ -38,7 +39,9 @@ setup(
             'object_position_server = my_xarm6_app.vision.object_position_server:main',
             'pick_place_vision = my_xarm6_app.motion.pick_place_vision:main',
             'llm_command_node = my_xarm6_app.llm.llm_command_node:main',
-            'move_to_position_llm = my_xarm6_app.motion.move_to_position_llm:main'
+            'move_to_position_llm = my_xarm6_app.motion.move_to_position_llm:main',
+            'llm_task_node = my_xarm6_app.llm.llm_task_node:main',
+            'pick_place_vision_llm = my_xarm6_app.motion.pick_place_vision_llm:main',
 
         ],
     },
